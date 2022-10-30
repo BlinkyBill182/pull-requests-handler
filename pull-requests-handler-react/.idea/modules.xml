@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../pull-requests-handler-firebase/.idea/pull-requests-handler-firebase.iml" filepath="$PROJECT_DIR$/../pull-requests-handler-firebase/.idea/pull-requests-handler-firebase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pull-requests-handler-react.iml" filepath="$PROJECT_DIR$/.idea/pull-requests-handler-react.iml" />
+    </modules>
+  </component>
+</project>

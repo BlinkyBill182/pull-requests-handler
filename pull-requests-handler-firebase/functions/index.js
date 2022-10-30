@@ -22,7 +22,7 @@ const app = initializeApp(firebaseConfig);
 exports.helloWorld = functions.https.onRequest(async (request, response) => {
   functions.logger.info("Hello logs!", {structuredData: true});
   console.log('request', request.body);
-  const { pull_request: { id: pullRequestId, user, state }, action, url, mergeable, mergeable_state } = request.body
+  const { pull_request: { id: pullRequestId, user, state, url }, action, mergeable, mergeable_state } = request.body
   const { id: userId, login: username } = user
   const db = getDatabase();
 
