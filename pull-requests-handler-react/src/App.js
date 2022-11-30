@@ -14,8 +14,9 @@ const App = () => {
 
     return (
         <div className="App">
-            userData: {userData}
-            {/*pullRequests: {pullRequests}*/}
+            {
+                JSON.stringify(userData)
+            }
             <button className="btn" onClick={login}>
                 {isPending ? 'Loading...' : 'Login With Github'}
             </button>
