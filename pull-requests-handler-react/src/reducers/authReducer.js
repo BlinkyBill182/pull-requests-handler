@@ -3,7 +3,7 @@ export const authReducer = (state, action) => {
         case "LOGIN":
             return { ...state, user: action.payload };
         case "LOGOUT":
-            return { ...state, user: null };
+            return { ...state, userData: undefined, user: undefined };
         case "AUTH_IS_READY":
             return { ...state, user: action.payload, authIsReady: true };
         case "DATA_RETRIEVE":

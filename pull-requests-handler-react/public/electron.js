@@ -1,16 +1,32 @@
 const path = require('path');
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, screen, protocol} = require('electron');
 const isDev = require('electron-is-dev');
 
-function createWindow() {
+// Scheme must be registered before the app is ready
+protocol.registerSchemesAsPrivileged([
+    { scheme: 'app', privileges: { secure: true, standard: true } }
+])
+
+async function createWindow() {
     // Create the browser window.
+    const display = screen.getPrimaryDisplay();
+    const dimensions = display.workAreaSize;
+    
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        x: 0,
+        y: 0,
+        width: dimensions.width,
+        height: 50,
+        frame: false,
+        roundedCorners: false,
+        resizable: false,
         webPreferences: {
-            nodeIntegration: true,
-        },
+            // Use pluginOptions.nodeIntegration, leave this alone
+            // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
+            nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+            contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+        }
     });
 
     // and load the index.html of the app.
@@ -45,3 +61,18 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+// Exit cleanly on request from parent process in development mode.
+if (isDev) {
+    if (process.platform === 'win32') {
+        process.on('message', (data) => {
+            if (data === 'graceful-exit') {
+                app.quit()
+            }
+        })
+    } else {
+        process.on('SIGTERM', () => {
+            app.quit()
+        })
+    }
+}

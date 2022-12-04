@@ -13,28 +13,81 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  /*background-color: hsl(216, 12%, 8%);*/
+  background-color: #272C35;
 }
 
-.btn {
-  border: none;
-  background-color: hsl(25, 97%, 53%);
+button{
+  all: unset;
   cursor: pointer;
-  border-radius: 6px;
-  color: white;
-  font-weight: bold;
-  padding: 12px 14px;
-  font-size: 18px;
-  margin-top: 8px;
+  border-radius: 5px;
+  padding: 8px 15px;
 }
 
-.btn:hover {
-  background-color: hsla(25, 97%, 53%, 0.668);
-  transition: all 100ms linear;
+button:hover{
+  cursor: pointer;
+  background-color: #3C424C;
 }
 
-.github-logo {
-  width: 18px;
-  margin-right: 6px;
-  vertical-align: middle;
+.container{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 10px 0 10px;
+}
+
+.prs-container{
+  display: flex;
+}
+
+.pr-container{
+  display: flex;
+  height: 38px;
+  color: #AAB2C0;
+  background-color: #20252C;
+  border: 1px solid #3C424C;
+  margin-right: 11px;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pr-container:hover{
+  background-color: #3C424C;
+}
+
+.pr-container:hover .light{
+  border-color: rgba(32, 37, 44, 0.56);
+}
+
+.btn{
+  height: 25px;
+  background-color: transparent;
+}
+
+img{
+  height: 100%;
+  width: 100%;
+}
+
+.light {
+  margin-right: 10px;
+  height: 100%;
+  width: 9px;
+  border: 1px solid #3C424C;
+}
+
+.light.green {
+  background-color: #1cf104;
+  box-shadow: 0 0 12px #1cf104;
+}
+
+.light.yellow {
+  background-color: #eae607;
+  box-shadow: 0 0 12px #eae607;
+}
+
+.light.red {
+  background-color: #ff0033;
+  box-shadow: 0 0 12px #ff0033;
 }

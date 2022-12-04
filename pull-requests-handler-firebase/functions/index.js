@@ -22,11 +22,23 @@ const app = initializeApp(firebaseConfig);
 exports.helloWorld = functions.https.onRequest(async (request, response) => {
   functions.logger.info("Hello logs!", {structuredData: true});
   console.log('request', request.body);
-  const { pull_request: { id: pullRequestId, user, state, url }, action, mergeable, mergeable_state, requested_reviewer } = request.body
+  const { review: { state: reviewState } = {}, pull_request: { id: pullRequestId, user, state, html_url: url, title }, action, mergeable, mergeable_state, requested_reviewer } = request.body
   const { id: userId, login: username } = user
   const db = getDatabase();
 
   switch (action){
+    case 'submitted':
+      if(reviewState === 'approved'){
+        await update(ref(db, 'users/' + userId + '/' + pullRequestId), {
+          state: reviewState
+        });
+      }
+      if(reviewState === 'changes_requested'){
+        await update(ref(db, 'users/' + userId + '/' + pullRequestId), {
+          state: action,
+        });
+      }
+      break;
     case 'closed':
       console.log('closed');
       await remove(ref(db, 'users/' + userId + '/' + pullRequestId));
@@ -34,6 +46,7 @@ exports.helloWorld = functions.https.onRequest(async (request, response) => {
     case 'review_requested':
       const { id: reviewer_id, login: reviewer_username } = requested_reviewer;
       await update(ref(db, 'users/' + userId + '/' + pullRequestId), {
+        state: action,
         reviewer: {
           id: reviewer_id,
           username: reviewer_username
@@ -43,13 +56,12 @@ exports.helloWorld = functions.https.onRequest(async (request, response) => {
     case 'reopened':
     case 'opened':
       console.log('opened');
-      await update(ref(db, 'users/' + userId), {
-        username,
-      });
+      await update(ref(db, 'users/' + userId), {});
 
       await update(ref(db, 'users/' + userId + '/' + pullRequestId), {
         state,
         url,
+        title,
       });
       break;
     default:
