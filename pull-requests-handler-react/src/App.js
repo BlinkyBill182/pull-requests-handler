@@ -11,23 +11,29 @@ const App = () => {
     const {login} = useLogin();
     const {logout} = useLogout();
 
-    const { userData } = useContext(AuthContext);
-
-    if(userData){
-        console.log(userData);
-    }
+    const { userData: {
+        userPullRequests,
+        userRequestedReviews
+    } } = useContext(AuthContext);
 
     return (
         <div className="App">
             <div className="container">
                 <div className="prs-container">
                     {
-                        userData && Object.keys(userData).map((key, index) => {
-                            const { url, title } = userData[key]
+                        userPullRequests && Object.keys(userPullRequests).map((key, index) => {
+                            const { url, title } = userPullRequests[key]
                             return <div className="pr-container" key={key} onClick={() => window.open(url, '_blank')} >
-                                <div className="light green" />
-                                <div className="light" />
-                                <div className="light" />
+                                <div className="light yellow" />
+                                <span>{ title }</span>
+                            </div>
+                        })
+                    }
+                    {
+                        userRequestedReviews && Object.keys(userRequestedReviews).map((key, index) => {
+                            const { url, title } = userRequestedReviews[key]
+                            return <div className="pr-container" key={key} onClick={() => window.open(url, '_blank')} >
+                                <div className="light red" />
                                 <span>{ title }</span>
                             </div>
                         })
@@ -35,7 +41,7 @@ const App = () => {
                 </div>
                 <div className="buttons-container">
                     {
-                        _.isUndefined(userData) ?
+                        _.isUndefined(userPullRequests) ?
                             <button className="btn" onClick={login}>
                                 <img src={require('./svg/github.svg').default} alt='mySvgImage' />
                             </button> :

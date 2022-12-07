@@ -24,11 +24,30 @@ const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         if(state.user){
             const userId = state.user.auth.currentUser.providerData[0].uid
-            const res = ref(database, `/users/${userId}`);
+            const res = ref(database, `/users`);
 
-            return onValue(res, (user) => {
-                const userData = user.val();
-                dispatch({type: "DATA_RETRIEVE", payload: userData});
+            return onValue(res, (data) => {
+
+                const database = data.val();
+                const userPullRequests = database[userId] || [];
+
+                const userRequestedReviews = [];
+
+                for (const user in database) {
+                    for (const userPRS in database[user]) {
+                        const userPR = database[user][userPRS];
+                        if (userPR?.reviewer?.id === Number(userId)){
+                            userRequestedReviews.push(userPR)
+                        }
+                    }
+                }
+
+                const payload = {
+                    userPullRequests,
+                    userRequestedReviews,
+                }
+
+                dispatch({type: "DATA_RETRIEVE", payload});
             });
         }
     }, [state.user]);
