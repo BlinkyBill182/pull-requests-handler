@@ -29,7 +29,7 @@ const AuthContextProvider = ({ children }) => {
             return onValue(res, (data) => {
 
                 const database = data.val();
-                const userPullRequests = database[userId] || [];
+                const userPullRequests = database?.[userId] || [];
 
                 const userRequestedReviews = [];
 

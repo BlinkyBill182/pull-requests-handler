@@ -12,9 +12,9 @@ const App = () => {
     const {logout} = useLogout();
 
     const { userData: {
-        userPullRequests,
-        userRequestedReviews
-    } } = useContext(AuthContext);
+        userPullRequests = undefined,
+        userRequestedReviews = undefined
+    } = {} } = useContext(AuthContext);
 
     return (
         <div className="App">
