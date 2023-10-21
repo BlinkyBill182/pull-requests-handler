@@ -82,7 +82,7 @@ exports.helloWorld = functions.https.onRequest(async (request, response) => {
 
 exports.exchangeGithubCodeForFirebaseToken = functions.https.onCall(async (data, context) => {
   const CLIENT_ID = 'Iv1.bb0106805da87921'; // Your GitHub Client ID
-  const CLIENT_SECRET = '12f4cb2707c54e083f4707613bfecbd9db40eeb6'; // Your GitHub Client Secret
+  const CLIENT_SECRET = 'ea75d95ec581bf31b9325b7a0a14c204ffa0011d'; // Your GitHub Client Secret
 
   const { code } = data;
 

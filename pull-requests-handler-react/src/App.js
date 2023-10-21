@@ -8,7 +8,7 @@ import { useLogout } from './hooks/useLogout';
 import { AuthContext } from './contexts/AuthContext';
 
 const App = () => {
-    const {login} = useLogin();
+    const {login, isPending} = useLogin();
     const {logout} = useLogout();
 
     const { userData: {
@@ -42,7 +42,7 @@ const App = () => {
                 <div className="buttons-container">
                     {
                         _.isUndefined(userPullRequests) ?
-                            <button className="btn" onClick={login}>
+                            <button className="btn" onClick={login} disabled={isPending}>
                                 <img src={require('./svg/github.svg').default} alt='mySvgImage' />
                             </button> :
                             <button className="btn" onClick={logout}>

@@ -6,26 +6,8 @@ const { getFunctions, httpsCallable } = require('@firebase/functions');
 const { getFirestore, collection, getDocs } = require('@firebase/firestore');
 const { getAuth, GithubAuthProvider, signInWithPopup, signInWithCustomToken} = require('@firebase/auth');
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCrOVODfIwv0St5W9aeD80k1rJRDwXqbDE",
-    authDomain: "pull-requests-handler.firebaseapp.com",
-    databaseURL: "https://pull-requests-handler-default-rtdb.firebaseio.com",
-    projectId: "pull-requests-handler",
-    storageBucket: "pull-requests-handler.appspot.com",
-    messagingSenderId: "207968340936",
-    appId: "1:207968340936:web:a79ed6867bb8f0996f0efd"
-};
-
-const appInstance = initializeApp(firebaseConfig);
-const functionsInstance = getFunctions(appInstance);
-const authInstance = getAuth(appInstance);
-const db = getFirestore(appInstance);
-
-// Define the reference to your collection
-const dataRef = collection(db, 'tests'); // Replace with your collection's name
-
 // GitHub Authentication
-const githubOauthUrl = `https://github.com/login/oauth/authorize?client_id=YOUR_GITHUB_CLIENT_ID&redirect_uri=http://localhost:8000/callback&scope=user&state=SOME_RANDOM_STRING`;
+const githubOauthUrl = `https://github.com/login/oauth/authorize?client_id=910afe64a64a230d2628&redirect_uri=http://localhost:8082/callback`;
 
 // GitHub Authentication using BrowserWindow
 const signInWithGithub = () => {
@@ -36,7 +18,9 @@ const signInWithGithub = () => {
             show: true,
             modal: true,
             webPreferences: {
-                nodeIntegration: false
+                nodeIntegration: false,
+                partition: 'persist:main',
+                session: require('electron').session.defaultSession
             }
         });
 
@@ -94,19 +78,5 @@ app.whenReady().then(async () => {
     const iconBase64 = getIcon();
     const icon = nativeImage.createFromDataURL(iconBase64);
     const tray = new Tray(icon);
-
-    try {
-        const code = await signInWithGithub();
-
-        // Use the Firebase function to get Firebase custom token
-        const firebaseToken = await getFirebaseTokenFromGithubCode(code);
-
-        // Now sign in to Firebase with the custom token
-        await signInWithCustomToken(authInstance, firebaseToken);
-
-        // ... [rest of your code]
-    } catch (error) {
-        console.error('Authentication error:', error);
-    }
 });
 
